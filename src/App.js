@@ -28,9 +28,17 @@ class App extends Component {
     super(props);
 
     this.state = {
-      list: list,
+      list,
     };
+    this.onDismiss = this.onDismiss.bind(this);
   };
+
+  //removes the clicked item
+  onDismiss(id) {
+    const isNotId = item => item.objectID !== id;
+    const updatedList = this.state.list.filter(isNotId);
+    this.setState({ list: updatedList }); //updates the list in the state
+  }
 
   render() {
     var helloWorld = 'Welcome to React, bigtobz!';
@@ -50,6 +58,14 @@ class App extends Component {
                 <span>{item.author}</span>
                 <span>{item.num_comments}</span>
                 <span>{item.points}</span>
+                <span> 
+                  <button 
+                    onClick={() => this.onDismiss(item.objectID)}
+                    type="button"
+                  >
+                    Dimiss
+                  </button>
+                </span>
               </div>
           )}
       </div>
