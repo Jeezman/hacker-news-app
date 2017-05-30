@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 const list = [
@@ -22,6 +22,13 @@ const list = [
   }
 ]
 
+
+function isSearched(searchTerm) {
+  return function(item) {
+    return !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+  }
+}
+
 class App extends Component {
 
   constructor (props) {
@@ -29,8 +36,11 @@ class App extends Component {
 
     this.state = {
       list,
+      searchTerm: '',
     };
+
     this.onDismiss = this.onDismiss.bind(this);
+    this.onSearchChange = this.onSearchChange.bind(this);
   };
 
   //removes the clicked item
@@ -38,6 +48,12 @@ class App extends Component {
     const isNotId = item => item.objectID !== id;
     const updatedList = this.state.list.filter(isNotId);
     this.setState({ list: updatedList }); //updates the list in the state
+  }
+
+  onSearchChange(event) {
+    this.setState({
+      searchTerm: event.target.value
+    }); 
   }
 
   render() {
@@ -49,8 +65,11 @@ class App extends Component {
     return (
       <div className="App">
           <h2>{helloWorld}</h2>
+          <form>
+            <input type="text" onChange={this.onSearchChange} />
+          </form>
           <p> {`Hey ${user.firstname}, I hear you are ${user.age} years old, right?`} </p>
-          { this.state.list.map( item => 
+          { this.state.list.filter(isSearched(this.state.searchTerm)).map(item => 
               <div key={item.objectID}>
                 <span>
                   <a href={item.url}>{item.title}</a>
@@ -68,6 +87,24 @@ class App extends Component {
                 </span>
               </div>
           )}
+          {/*{ this.state.list.map( item => 
+              <div key={item.objectID}>
+                <span>
+                  <a href={item.url}>{item.title}</a>
+                </span>
+                <span>{item.author}</span>
+                <span>{item.num_comments}</span>
+                <span>{item.points}</span>
+                <span> 
+                  <button 
+                    onClick={() => this.onDismiss(item.objectID)}
+                    type="button"
+                  >
+                    Dimiss
+                  </button>
+                </span>
+              </div>
+          )}*/}
       </div>
     );
   }
