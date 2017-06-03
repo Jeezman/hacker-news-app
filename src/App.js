@@ -22,6 +22,12 @@ const list = [
   }
 ]
 
+const DEFAULT_QUERY = 'redux';
+
+const PATH_BASE = 'https://hn.algolia.com/api/v1';
+const PATH_SEARCH = '/search';
+const PARAM_SEARCH = 'query=';
+
 
 function isSearched(searchTerm) {
   return function(item) {
