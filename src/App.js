@@ -60,7 +60,25 @@ class App extends Component {
   };
 
   setSearchTopstories(result) {
-    this.setState({ result });
+    //get hits and page from result
+    const { hits, page } = result;
+
+    //check if there are old hits
+    //new search request when page is 0;
+    const oldHits = page !== 0
+     ? this.state.result.hits
+     : [];
+
+    //merge old and new hits from recent API request
+    const updatedHits = [
+      ...oldHits,
+      ...hits
+    ];
+
+    //set the merged hits and page in the state
+    this.setState({ 
+      result: { hits: updatedHits, page }
+    });
   }
 
   fetchSearchTopstories(searchTerm, page) {
